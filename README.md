@@ -1,99 +1,87 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Quiz Application API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a **Quiz Application API** built with **NestJS**. It provides endpoints to create quizzes, retrieve quizzes by their ID, submit answers to quizzes, and process the results. The application is containerized using **Docker** and can be easily run with **Docker Compose**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## Prerequisites
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Before running the project, ensure you have the following installed:
 
-## Project setup
+- **Docker**: [Install Docker](https://www.docker.com/get-started)
+- **Docker Compose**: [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-```bash
-$ npm install
+
+
+## Features
+
+- **Create a Quiz**: Allows users to create a new quiz.
+```http
+POST /api/quiz HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+Content-Length: 1026
+
+{
+    "title": "Quiz 1",
+    "questions": [
+        {
+            "text": "What is the capital of France?",
+            "options": ["Berlin", "Madrid", "Paris", "Rome"],
+            "correct_option": 2
+        },
+        {
+            "text": "Which element has the chemical symbol 'O'?",
+            "options": ["Oxygen", "Osmium", "Ozone", "Oxygenium"],
+            "correct_option": 0
+        },
+        {
+            "text": "What is the largest planet in our solar system?",
+            "options": ["Earth", "Jupiter", "Saturn", "Mars"],
+            "correct_option": 1
+        },
+        {
+            "text": "Who wrote the play 'Romeo and Juliet'?",
+            "options": ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+            "correct_option": 1
+        },
+        {
+            "text": "Which country is known as the Land of the Rising Sun?",
+            "options": ["China", "India", "Japan", "Thailand"],
+            "correct_option": 2
+        }
+    ]
+}
 ```
 
-## Compile and run the project
+- **Get Quiz**: Fetches a quiz by its unique ID.
+```http
+GET /api/quiz/a342fb0c-897e-40ed-987b-8f449008d0f0 HTTP/1.1
+Host: localhost:3000
+```
+- **Submit Answer**: Submits answers to a quiz.
+```http
+POST /api/quiz/submit HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+Content-Length: 161
 
-```bash
-# development
-$ npm run start
+{
+    "quiz_id":"c1e1c471-26fd-4073-83c3-17ce9f789b82",
+    "question_id":"bf72665e-f522-4736-827b-895fa8beb19b",
+    "user_id":1,
+    "selected_option":2
+}
+```
+- **Get Results**: Processes and retrieves quiz results.
+```http
+POST /api/quiz/result HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+Content-Length: 76
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+{
+    "quiz_id":"c1e1c471-26fd-4073-83c3-17ce9f789b82",
+    "user_id":1
+}
 ```
 
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

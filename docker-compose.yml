@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  # The NestJS backend application
+  nestjs-app:
+    container_name: nestjs-app
+    build:
+      context: .  # Path to your NestJS project
+      dockerfile: Dockerfile  # Ensure you have a Dockerfile in your project
+    ports:
+      - "3000:3000"  # Map port 3000 of the container to port 3000 on the host
+    volumes:
+      - .:/app  # Mount your app code to allow changes without rebuilding the container
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
